@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecureAPI.Data;
 using SecureAPI.DTO;
@@ -12,6 +13,7 @@ namespace SecureAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class EntryController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace SecureAPI.Controllers
             _userManager = userManager;
         }
 
-
+        [Authorize(Roles = "UserManager,Admin")]
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
@@ -37,6 +39,7 @@ namespace SecureAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetByUser")]
         public IActionResult GetByUser()
         {
@@ -55,7 +58,7 @@ namespace SecureAPI.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost("Save")]
         public IActionResult Save([FromBody] Entry model)
         {
@@ -86,7 +89,7 @@ namespace SecureAPI.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Entry model)
         {
@@ -116,7 +119,7 @@ namespace SecureAPI.Controllers
         }
 
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
